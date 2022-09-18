@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "strict": true
+    },
+    "importMap": "import_maps.json",
+    "fmt": {
+        "options": {
+            "singleQuote": true,
+            "indentWidth": 4
+        }
+    }
+}
