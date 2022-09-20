@@ -13,10 +13,12 @@ export function decorate_msg(msg, type) {
     let icon;
     switch (type) {
         case MSG_TYPE.UNKNOWN_ERROR:
-            icon = '🤷' + random_skin_tone() + random_gender();
+            // shrugging
+            icon = '\u{1f937}' + random_skin_tone() + random_gender();
             break;
         case MSG_TYPE.HTTP_ERROR:
-            icon = '🙍' + random_skin_tone() + random_gender();
+            // frowning
+            icon = '\u{1f64d}' + random_skin_tone() + random_gender();
             break;
         case MSG_TYPE.SIGNIN_SUCCESS:
         case MSG_TYPE.GUILD_SIGNIN_SUCCESS:
@@ -24,13 +26,16 @@ export function decorate_msg(msg, type) {
             break;
         case MSG_TYPE.SIGNIN_FAILED:
         case MSG_TYPE.GUILD_SIGNING_FAILED:
-            icon = '🤦' + random_skin_tone() + random_gender();
+            // face palm
+            icon = '\u{1f926}' + random_skin_tone() + random_gender();
             break;
         case MSG_TYPE.ANI_ANSWER_SUCCESS:
-            icon = '🙆' + random_skin_tone() + random_gender();
+            // gesture ok
+            icon = '\u{1f646}' + random_skin_tone() + random_gender();
             break;
         case MSG_TYPE.ANI_ANSWER_FAILED:
-            icon = '🙅' + random_skin_tone() + random_gender();
+            // gesture no
+            icon = '\u{1f645}' + random_skin_tone() + random_gender();
             break;
         default:
             icon = '❓';
@@ -46,7 +51,7 @@ const ZWJ = '\u{200d}'; // zero-width joiner
 const VS16 = '\u{fe0f}'; // variation selector-16
 
 function random_skin_tone() {
-    return ZWJ + random_choice([
+    return random_choice([
         '\u{1f3fb}', // light
         '\u{1f3fc}', // medium light
         '\u{1f3fd}', // medium
