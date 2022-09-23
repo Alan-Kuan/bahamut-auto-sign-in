@@ -22,7 +22,7 @@ export function decorate_msg(msg, type) {
             break;
         case MSG_TYPE.SIGNIN_SUCCESS:
         case MSG_TYPE.GUILD_SIGNIN_SUCCESS:
-            icon = random_choice(['✌', '🤟', '👍']);
+            icon = random_choice(['✌', '🤟', '👍']) + random_skin_tone();
             break;
         case MSG_TYPE.SIGNIN_FAILED:
         case MSG_TYPE.GUILD_SIGNING_FAILED:
