@@ -1,3 +1,5 @@
+#!/usr/bin/env deno run --import-map=../import_maps.json
+
 import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
 import { HTTPError, SignInError } from '@/modules/error.js';
 
@@ -7,7 +9,7 @@ export function sign_in(req) {
     return req.post(`${ajax_base_url}/signin.php`, { action: 2 })
         .then((res) => {
             if (!res.ok) {
-                throw new HTTPError(err.statusText);
+                throw new HTTPError(res.statusText);
             }
             return res.json();
         })

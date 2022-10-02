@@ -21,17 +21,23 @@ const tg_bot = new Telegram(TG_BOT_TOKEN);
 
 export default async ({ request }) => {
     if (!request.headers.has('Authorization')) {
+        console.error('No token was given.');
         return responseWith(400);
     }
 
     const recv_token = request.headers.get('Authorization')
         .replace('Bearer ', '');
     if (recv_token !== MY_TOKEN) {
+        console.error('Wrong token was given.');
         return responseWith(401);
     }
 
     const status = await login(req, UID, PASSWD, VCODE)
-        .then(async () => {
+        .then(async (status) => {
+            if (!status.ok) {
+                throw new Error(status.msg);
+            }
+
             const signin_msg = await sign_in(req);
             const guild_signin_msg = await guild_sign_in(req);
             const ani_answer_msg = await ani_answer(req);
@@ -47,20 +53,20 @@ export default async ({ request }) => {
                 `[動畫瘋問答遊戲]\n${ani_answer_msg}\n\n` +
                 `#${today}`;
 
-            send(msg);
+            await send(msg);
             return 200;
         })
-        .catch((err) => {
-            send(err);
+        .catch(async (err) => {
+            await send(err.message);
             return 500;
         });
 
     return responseWith(status);
 };
 
-function send(msg) {
+async function send(msg) {
     console.log(msg);
-    tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
+    await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
 }
 
 function responseWith(status) {

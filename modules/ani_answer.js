@@ -1,3 +1,5 @@
+#!/usr/bin/env deno run --import-map=../import_maps.json
+
 import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
 import { HTTPError } from '@/modules/error.js';
 
@@ -11,7 +13,7 @@ export function ani_answer(req) {
     })
         .then((res) => {
             if (!res.ok) {
-                throw new HTTPError(err.statusText);
+                throw new HTTPError(res.statusText);
             }
             return res.json();
         })
@@ -23,7 +25,7 @@ export function ani_answer(req) {
         })
         .then((res) => {
             if (!res.ok) {
-                throw new HTTPError(err.statusText);
+                throw new HTTPError(res.statusText);
             }
             return res.json();
         })
@@ -34,7 +36,7 @@ export function ani_answer(req) {
             })
                 .then((res) => {
                     if (!res.ok) {
-                        throw new HTTPError(err.statusText);
+                        throw new HTTPError(res.statusText);
                     }
                     return res.json();
                 })
@@ -49,7 +51,7 @@ export function ani_answer(req) {
         })
         .then((res) => {
             if (!res.ok) {
-                throw new HTTPError(err.statusText);
+                throw new HTTPError(res.statusText);
             }
             return res.json();
         })
