@@ -22,14 +22,14 @@ const tg_bot = new Telegram(TG_BOT_TOKEN);
 export default async ({ request }) => {
     if (!request.headers.has('Authorization')) {
         console.error('No token was given.');
-        return responseWith(400);
+        return respondsWith(400);
     }
 
     const recv_token = request.headers.get('Authorization')
         .replace('Bearer ', '');
     if (recv_token !== MY_TOKEN) {
         console.error('Wrong token was given.');
-        return responseWith(401);
+        return respondsWith(401);
     }
 
     const status = await login(req, UID, PASSWD, VCODE)
@@ -61,7 +61,7 @@ export default async ({ request }) => {
             return 500;
         });
 
-    return responseWith(status);
+    return respondsWith(status);
 };
 
 async function send(msg) {
@@ -69,6 +69,6 @@ async function send(msg) {
     await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
 }
 
-function responseWith(status) {
+function respondsWith(status) {
     return new Response('', { status });
 }
