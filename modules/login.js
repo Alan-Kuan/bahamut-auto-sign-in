@@ -1,4 +1,4 @@
-#!/usr/bin/env deno run --import-map=../import_maps.json
+#!/usr/bin/env deno run --import-map import_maps.json
 
 import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
 import { HTTPError } from '@/modules/error.js';

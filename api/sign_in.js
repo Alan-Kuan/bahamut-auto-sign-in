@@ -1,6 +1,6 @@
-#!/usr/bin/env deno run --import-map=../import_maps.json
+#!/usr/bin/env deno run --import-map import_maps.json
 
-import { config } from 'dotenv';
+import { load } from 'dotenv';
 import { Telegram } from 'telegram';
 import { Req } from '@/modules/req.js';
 import { login } from '@/modules/login.js';
@@ -8,7 +8,9 @@ import { sign_in } from '@/modules/sign_in.js';
 import { guild_sign_in } from '@/modules/guild_sign_in.js';
 import { ani_answer } from '@/modules/ani_answer.js';
 
-await config({ safe: true, export: true });
+// for production: read environment variables
+// for development: read exported variables from .env
+await load({ export: true });
 const UID = Deno.env.get('UID');
 const PASSWD = Deno.env.get('PASSWD');
 const VCODE = Deno.env.get('VCODE');
@@ -19,7 +21,7 @@ const MY_TOKEN = Deno.env.get('MY_TOKEN');
 const req = new Req(VCODE);
 const tg_bot = new Telegram(TG_BOT_TOKEN);
 
-export default async ({ request }) => {
+export default async (request) => {
     if (!request.headers.has('Authorization')) {
         console.error('No token was given.');
         return respondsWith(400);
