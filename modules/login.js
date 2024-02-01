@@ -9,12 +9,14 @@ export function login(fetcher, uid, passwd, vcode) {
     return fetcher.post(login_url, { uid, passwd, vcode })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: post login url');
                 throw new HTTPError(res.statusText);
             }
             return res.json();
         })
         .then((body) => {
             if (body.error) {
+                console.error('Error: failed to log in');
                 throw new Error(body.message);
             }
             return { ok: true };

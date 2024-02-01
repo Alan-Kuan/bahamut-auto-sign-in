@@ -9,18 +9,21 @@ export function sign_in(fetcher) {
     return fetcher.post(`${ajax_base_url}/signin.php`, { action: 2 })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: post sign-in url with action 2');
                 throw new HTTPError(res.statusText);
             }
             return res.json();
         })
         .then((body) => {
             if (body.data.signin === 1) {
+                console.error('Error: already signed in');
                 throw new SignInError('今日已簽到');
             }
             return fetcher.get(`${ajax_base_url}/get_csrf_token.php`);
         })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: get csrf token');
                 throw new HTTPError(res.statusText);
             }
             return res.text();
@@ -33,12 +36,14 @@ export function sign_in(fetcher) {
         })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: post sign-in url with action 1');
                 throw new HTTPError(res.statusText);
             }
             return res.json();
         })
         .then((body) => {
             if (body.error) {
+                console.error('Error: failed to sign in');
                 throw new SignInError(body.error.message);
             }
             return decorate_msg(

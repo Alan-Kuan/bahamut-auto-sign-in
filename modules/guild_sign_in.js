@@ -10,6 +10,7 @@ export function guild_sign_in(fetcher) {
     return fetcher.get(guild_url, { type: 'forum' })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: get forum content from top bar');
                 throw new HTTPError(res.statusText);
             }
             return res.text();
@@ -23,6 +24,7 @@ export function guild_sign_in(fetcher) {
                 return fetcher.post(guild_signin_url, { sn: gsn })
                     .then((res) => {
                         if (!res.ok) {
+                            console.error('Error: post guild sign-in url');
                             throw new HTTPError(res.statusText);
                         }
                         return res.json();

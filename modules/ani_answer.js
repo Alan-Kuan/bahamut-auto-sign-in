@@ -13,6 +13,7 @@ export function ani_answer(fetcher) {
     })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: get home page');
                 throw new HTTPError(res.statusText);
             }
             return res.json();
@@ -25,6 +26,7 @@ export function ani_answer(fetcher) {
         })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: get creation detail');
                 throw new HTTPError(res.statusText);
             }
             return res.json();
@@ -36,6 +38,7 @@ export function ani_answer(fetcher) {
             })
                 .then((res) => {
                     if (!res.ok) {
+                        console.error('Error: get anime question');
                         throw new HTTPError(res.statusText);
                     }
                     return res.json();
@@ -51,6 +54,7 @@ export function ani_answer(fetcher) {
         })
         .then((res) => {
             if (!res.ok) {
+                console.error('Error: post anime answer');
                 throw new HTTPError(res.statusText);
             }
             return res.json();
