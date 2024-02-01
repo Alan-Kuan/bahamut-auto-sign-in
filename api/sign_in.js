@@ -24,14 +24,12 @@ const tg_bot = new Telegram(TG_BOT_TOKEN);
 export default async (req) => {
     if (!req.headers.has('Authorization')) {
         console.error('No token was given.');
-        return respondsWith(400);
+        return new Response({ status: 400 });
     }
 
-    const recv_token = req.headers.get('Authorization')
-        .replace('Bearer ', '');
-    if (recv_token !== MY_TOKEN) {
+    if (req.headers.get('Authorization') !== `Bearer ${MY_TOKEN}`) {
         console.error('Wrong token was given.');
-        return respondsWith(401);
+        return new Response({ status: 401 });
     }
 
     const status = await login(fetcher, UID, PASSWD, VCODE)
@@ -54,23 +52,18 @@ export default async (req) => {
                 `[公會簽到]\n${guild_signin_msg}\n\n` +
                 `[動畫瘋問答遊戲]\n${ani_answer_msg}\n\n` +
                 `#${today}`;
+            await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
 
-            await send(msg);
             return 200;
         })
         .catch(async (err) => {
-            await send(err.message);
+            console.error(err);
+
+            const msg = `發生錯誤：\n${err.message}`;
+            await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
+
             return 500;
         });
 
-    return respondsWith(status);
+    return new Response({ status });
 };
-
-async function send(msg) {
-    console.log(msg);
-    await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
-}
-
-function respondsWith(status) {
-    return new Response('', { status });
-}
