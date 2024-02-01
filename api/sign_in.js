@@ -2,7 +2,7 @@
 
 import { load } from 'dotenv';
 import { Telegram } from 'telegram';
-import { Req } from '@/modules/req.js';
+import { Fetcher } from '@/modules/fetcher.js';
 import { login } from '@/modules/login.js';
 import { sign_in } from '@/modules/sign_in.js';
 import { guild_sign_in } from '@/modules/guild_sign_in.js';
@@ -18,31 +18,31 @@ const TG_BOT_TOKEN = Deno.env.get('TG_BOT_TOKEN');
 const TG_USER_ID = Deno.env.get('TG_USER_ID');
 const MY_TOKEN = Deno.env.get('MY_TOKEN');
 
-const req = new Req(VCODE);
+const fetcher = new Fetcher(VCODE);
 const tg_bot = new Telegram(TG_BOT_TOKEN);
 
-export default async (request) => {
-    if (!request.headers.has('Authorization')) {
+export default async (req) => {
+    if (!req.headers.has('Authorization')) {
         console.error('No token was given.');
         return respondsWith(400);
     }
 
-    const recv_token = request.headers.get('Authorization')
+    const recv_token = req.headers.get('Authorization')
         .replace('Bearer ', '');
     if (recv_token !== MY_TOKEN) {
         console.error('Wrong token was given.');
         return respondsWith(401);
     }
 
-    const status = await login(req, UID, PASSWD, VCODE)
+    const status = await login(fetcher, UID, PASSWD, VCODE)
         .then(async (status) => {
             if (!status.ok) {
                 throw new Error(status.msg);
             }
 
-            const signin_msg = await sign_in(req);
-            const guild_signin_msg = await guild_sign_in(req);
-            const ani_answer_msg = await ani_answer(req);
+            const signin_msg = await sign_in(fetcher);
+            const guild_signin_msg = await guild_sign_in(fetcher);
+            const ani_answer_msg = await ani_answer(fetcher);
 
             const today = new Date().toLocaleDateString('zh-TW', {
                 year: 'numeric',

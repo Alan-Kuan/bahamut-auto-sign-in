@@ -6,8 +6,8 @@ import { HTTPError } from '@/modules/error.js';
 const api_base_url = 'https://api.gamer.com.tw/mobile_app/bahamut/v1';
 const ani_base_url = 'https://ani.gamer.com.tw/ajax';
 
-export function ani_answer(req) {
-    return req.get(`${api_base_url}/home.php`, {
+export function ani_answer(fetcher) {
+    return fetcher.get(`${api_base_url}/home.php`, {
         owner: 'blackXblue',
         page: 1,
     })
@@ -19,7 +19,7 @@ export function ani_answer(req) {
         })
         .then((body) => {
             const ans_sn = body.creation[0].sn;
-            return req.get(`${api_base_url}/home_creation_detail.php`, {
+            return fetcher.get(`${api_base_url}/home_creation_detail.php`, {
                 sn: ans_sn,
             });
         })
@@ -31,7 +31,7 @@ export function ani_answer(req) {
         })
         .then((body) => {
             const ans = body.content.match(/A:(\d)/)[1];
-            return req.get(`${ani_base_url}/animeGetQuestion.php`, {
+            return fetcher.get(`${ani_base_url}/animeGetQuestion.php`, {
                 t: Date.now(),
             })
                 .then((res) => {
@@ -42,7 +42,7 @@ export function ani_answer(req) {
                 })
                 .then((body) => {
                     const token = body.token;
-                    return req.post(`${ani_base_url}/animeAnsQuestion.php`, {
+                    return fetcher.post(`${ani_base_url}/animeAnsQuestion.php`, {
                         token,
                         ans,
                         t: Date.now(),

@@ -6,8 +6,8 @@ import { HTTPError } from '@/modules/error.js';
 const guild_url = 'https://api.gamer.com.tw/ajax/common/topBar.php';
 const guild_signin_url = 'https://guild.gamer.com.tw/ajax/guildSign.php';
 
-export function guild_sign_in(req) {
-    return req.get(guild_url, { type: 'forum' })
+export function guild_sign_in(fetcher) {
+    return fetcher.get(guild_url, { type: 'forum' })
         .then((res) => {
             if (!res.ok) {
                 throw new HTTPError(res.statusText);
@@ -20,7 +20,7 @@ export function guild_sign_in(req) {
             ];
             const msg_promises = matches.map((match) => {
                 const gsn = match[1];
-                return req.post(guild_signin_url, { sn: gsn })
+                return fetcher.post(guild_signin_url, { sn: gsn })
                     .then((res) => {
                         if (!res.ok) {
                             throw new HTTPError(res.statusText);

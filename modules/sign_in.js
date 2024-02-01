@@ -5,8 +5,8 @@ import { HTTPError, SignInError } from '@/modules/error.js';
 
 const ajax_base_url = 'https://www.gamer.com.tw/ajax';
 
-export function sign_in(req) {
-    return req.post(`${ajax_base_url}/signin.php`, { action: 2 })
+export function sign_in(fetcher) {
+    return fetcher.post(`${ajax_base_url}/signin.php`, { action: 2 })
         .then((res) => {
             if (!res.ok) {
                 throw new HTTPError(res.statusText);
@@ -17,7 +17,7 @@ export function sign_in(req) {
             if (body.data.signin === 1) {
                 throw new SignInError('今日已簽到');
             }
-            return req.get(`${ajax_base_url}/get_csrf_token.php`);
+            return fetcher.get(`${ajax_base_url}/get_csrf_token.php`);
         })
         .then((res) => {
             if (!res.ok) {
@@ -26,7 +26,7 @@ export function sign_in(req) {
             return res.text();
         })
         .then((token) => {
-            return req.post(`${ajax_base_url}/signin.php`, {
+            return fetcher.post(`${ajax_base_url}/signin.php`, {
                 action: 1,
                 token,
             });

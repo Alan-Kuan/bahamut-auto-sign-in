@@ -2,7 +2,7 @@
 
 import { Cookie, CookieJar, wrapFetch } from 'another_cookiejar';
 
-export class Req {
+export class Fetcher {
     timeout = 1000;
     credentials = 'include';
     headers = {

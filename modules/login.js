@@ -5,8 +5,8 @@ import { HTTPError } from '@/modules/error.js';
 
 const login_url = 'https://api.gamer.com.tw/mobile_app/user/v3/do_login.php';
 
-export function login(req, uid, passwd, vcode) {
-    return req.post(login_url, { uid, passwd, vcode })
+export function login(fetcher, uid, passwd, vcode) {
+    return fetcher.post(login_url, { uid, passwd, vcode })
         .then((res) => {
             if (!res.ok) {
                 throw new HTTPError(res.statusText);
