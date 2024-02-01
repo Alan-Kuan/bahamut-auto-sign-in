@@ -3,5 +3,11 @@
 		"api/**/*.[jt]s": {
             "runtime": "vercel-deno@3.0.4"
         }
-	}
+	},
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "https://github.com/Alan-Kuan/bahamut-auto-sign-in"
+        }
+    ]
 }
