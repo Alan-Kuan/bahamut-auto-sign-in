@@ -33,9 +33,7 @@ export function ani_answer(fetcher) {
         })
         .then((body) => {
             const ans = body.content.match(/A:(\d)/)[1];
-            return fetcher.get(`${ani_base_url}/animeGetQuestion.php`, {
-                t: Date.now(),
-            })
+            return fetcher.get(`${ani_base_url}/animeGetQuestion.php`)
                 .then((res) => {
                     if (!res.ok) {
                         console.error('Error: get anime question');
@@ -48,7 +46,6 @@ export function ani_answer(fetcher) {
                     return fetcher.post(`${ani_base_url}/animeAnsQuestion.php`, {
                         token,
                         ans,
-                        t: Date.now(),
                     });
                 });
         })
