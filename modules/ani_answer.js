@@ -6,8 +6,8 @@ import { HTTPError } from '@/modules/error.js';
 const api_base_url = 'https://api.gamer.com.tw/mobile_app/bahamut/v1';
 const ani_base_url = 'https://ani.gamer.com.tw/ajax';
 
-export function ani_answer(fetcher) {
-    return fetcher.get(`${api_base_url}/home.php`, {
+export async function ani_answer(fetcher) {
+    const ans = await fetcher.get(`${api_base_url}/home.php`, {
         owner: 'blackXblue',
         page: 1,
     })
@@ -32,22 +32,29 @@ export function ani_answer(fetcher) {
             return res.json();
         })
         .then((body) => {
-            const ans = body.content.match(/A:(\d)/)[1];
-            return fetcher.get(`${ani_base_url}/animeGetQuestion.php`)
-                .then((res) => {
-                    if (!res.ok) {
-                        console.error('Error: get anime question');
-                        throw new HTTPError(res.statusText);
-                    }
-                    return res.json();
-                })
-                .then((body) => {
-                    const token = body.token;
-                    return fetcher.post(`${ani_base_url}/animeAnsQuestion.php`, {
-                        token,
-                        ans,
-                    });
-                });
+            return body.content.match(/A:(\d)/)[1];
+        })
+        .catch((err) => {
+            const msg_type = err instanceof HTTPError
+                ? MSG_TYPE.HTTP_ERROR
+                : MSG_TYPE.UNKNOWN_ERROR;
+            return decorate_msg(err.message, msg_type);
+        });
+
+    const msg = await fetcher.get(`${ani_base_url}/animeGetQuestion.php`)
+        .then((res) => {
+            if (!res.ok) {
+                console.error('Error: get anime question');
+                throw new HTTPError(res.statusText);
+            }
+            return res.json();
+        })
+        .then((body) => {
+            const token = body.token;
+            return fetcher.post(`${ani_base_url}/animeAnsQuestion.php`, {
+                token,
+                ans,
+            });
         })
         .then((res) => {
             if (!res.ok) {
@@ -69,4 +76,6 @@ export function ani_answer(fetcher) {
                 : MSG_TYPE.UNKNOWN_ERROR;
             return decorate_msg(err.message, msg_type);
         });
+
+    return msg;
 }
