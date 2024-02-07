@@ -3,7 +3,6 @@
 import { Cookie, CookieJar, wrapFetch } from 'another_cookiejar';
 
 export class Fetcher {
-    timeout = 1000;
     credentials = 'include';
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -22,7 +21,6 @@ export class Fetcher {
     get(url, params) {
         return this.fetch(url + '?' + new URLSearchParams(params), {
             method: 'GET',
-            timeout: this.timeout,
             credentials: this.credentials,
             headers: this.headers,
         });
@@ -31,7 +29,6 @@ export class Fetcher {
     post(url, body) {
         return this.fetch(url, {
             method: 'POST',
-            timeout: this.timeout,
             credentials: this.credentials,
             headers: this.headers,
             body: new URLSearchParams(body), // since our Content-Type is "application/x-www-form-urlencoded"
