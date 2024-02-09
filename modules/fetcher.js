@@ -19,7 +19,8 @@ export class Fetcher {
     }
 
     get(url, params) {
-        return this.fetch(url + '?' + new URLSearchParams(params), {
+        const full_url = params ? url + '?' + new URLSearchParams(params) : url;
+        return this.fetch(full_url, {
             method: 'GET',
             credentials: this.credentials,
             headers: this.headers,
