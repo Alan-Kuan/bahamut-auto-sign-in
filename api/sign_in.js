@@ -6,7 +6,7 @@ import { Fetcher } from '@/modules/fetcher.js';
 import { login } from '@/modules/login.js';
 import { sign_in } from '@/modules/sign_in.js';
 import { guild_sign_in } from '@/modules/guild_sign_in.js';
-import { ani_answer } from '@/modules/ani_answer.js';
+// import { ani_answer } from '@/modules/ani_answer.js';
 
 // for production: read environment variables
 // for development: read exported variables from .env
@@ -40,7 +40,8 @@ export default async (req) => {
 
             const signin_msg = await sign_in(fetcher);
             const guild_signin_msg = await guild_sign_in(fetcher);
-            const ani_answer_msg = await ani_answer(fetcher);
+            // const ani_answer_msg = await ani_answer(fetcher);
+            const ani_answer_msg = '暫時停止執行';
 
             const today = new Date().toLocaleDateString('zh-TW', {
                 year: 'numeric',
