@@ -1,8 +1,4 @@
 {
-    "compilerOptions": {
-        "allowJs": true,
-        "strict": true
-    },
     "fmt": {
         "options": {
             "singleQuote": true,
@@ -13,7 +9,7 @@
         "@std/dotenv": "jsr:@std/dotenv@^0.225.5",
         "@jd1378/another-cookiejar": "jsr:@jd1378/another-cookiejar@^5.0.7",
         "telegram": "https://deno.land/x/telegram@v0.1.1/mod.ts",
-        "@/": "./"
+        "@/": "./modules/"
     },
     "tasks": {
         "dev": "deno run --allow-net --allow-read --allow-env main.ts"

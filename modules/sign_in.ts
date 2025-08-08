@@ -1,10 +1,11 @@
-import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
-import { HTTPError, SignInError } from '@/modules/error.js';
+import { decorate_msg, MsgType } from '@/msg_decorator.ts';
+import { HTTPError, SignInError } from '@/error.ts';
+import type { Fetcher } from '@/fetcher.ts';
 
 const ajax_base_url = 'https://www.gamer.com.tw/ajax';
 
-export function sign_in(fetcher) {
-    return fetcher.post(`${ajax_base_url}/signin.php`, { action: 2 })
+export async function sign_in(fetcher: Fetcher): Promise<string> {
+    return await fetcher.post(`${ajax_base_url}/signin.php`, { action: 2 })
         .then((res) => {
             if (!res.ok) {
                 console.error('Error: post sign-in url with action 2');
@@ -46,15 +47,15 @@ export function sign_in(fetcher) {
             }
             return decorate_msg(
                 `簽到成功！已連續簽到 ${body.data.days} 天`,
-                MSG_TYPE.SIGNIN_SUCCESS,
+                MsgType.SIGNIN_SUCCESS,
             );
         })
         .catch((err) => {
             const msg_type = err instanceof HTTPError
-                ? MSG_TYPE.HTTP_ERROR
+                ? MsgType.HTTP_ERROR
                 : (err instanceof SignInError
-                    ? MSG_TYPE.SIGNIN_FAILED
-                    : MSG_TYPE.UNKNOWN_ERROR);
+                    ? MsgType.SIGNIN_FAILED
+                    : MsgType.UNKNOWN_ERROR);
             return decorate_msg(err.message, msg_type);
         });
 }

@@ -1,10 +1,11 @@
-import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
-import { HTTPError } from '@/modules/error.js';
+import { decorate_msg, MsgType } from '@/msg_decorator.ts';
+import { HTTPError } from '@/error.ts';
+import type { Fetcher } from '@/fetcher.ts';
 
 const api_base_url = 'https://api.gamer.com.tw/mobile_app/bahamut/v1';
 const ani_base_url = 'https://ani.gamer.com.tw/ajax';
 
-export async function ani_answer(fetcher) {
+export async function ani_answer(fetcher: Fetcher): Promise<string> {
     const ans = await fetcher.get(`${api_base_url}/home.php`, {
         owner: 'blackXblue',
         page: 1,
@@ -34,8 +35,8 @@ export async function ani_answer(fetcher) {
         })
         .catch((err) => {
             const msg_type = err instanceof HTTPError
-                ? MSG_TYPE.HTTP_ERROR
-                : MSG_TYPE.UNKNOWN_ERROR;
+                ? MsgType.HTTP_ERROR
+                : MsgType.UNKNOWN_ERROR;
             return decorate_msg(err.message, msg_type);
         });
 
@@ -63,15 +64,15 @@ export async function ani_answer(fetcher) {
         })
         .then((body) => {
             if (body.ok) {
-                return decorate_msg(body.gift, MSG_TYPE.ANI_ANSWER_SUCCESS);
-            } else if (body.error) {
-                return decorate_msg(body.msg, MSG_TYPE.ANI_ANSWER_FAILED);
+                return decorate_msg(body.gift, MsgType.ANI_ANSWER_SUCCESS);
+            } else {
+                return decorate_msg(body.msg, MsgType.ANI_ANSWER_FAILED);
             }
         })
         .catch((err) => {
             const msg_type = err instanceof HTTPError
-                ? MSG_TYPE.HTTP_ERROR
-                : MSG_TYPE.UNKNOWN_ERROR;
+                ? MsgType.HTTP_ERROR
+                : MsgType.UNKNOWN_ERROR;
             return decorate_msg(err.message, msg_type);
         });
 

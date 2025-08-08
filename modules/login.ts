@@ -1,10 +1,17 @@
-import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
-import { HTTPError } from '@/modules/error.js';
+import { decorate_msg, MsgType } from '@/msg_decorator.ts';
+import { HTTPError } from '@/error.ts';
+import type { Fetcher } from '@/fetcher.ts';
+
+type LoginResult = {
+    ok: boolean,
+    msg?: string,
+};
 
 const login_url = 'https://api.gamer.com.tw/mobile_app/user/v3/do_login.php';
 
-export function login(fetcher, uid, passwd, vcode) {
-    return fetcher.post(login_url, { uid, passwd, vcode })
+export async function login(fetcher: Fetcher, uid: string, passwd: string,
+        vcode: string): Promise<LoginResult> {
+    return await fetcher.post(login_url, { uid, passwd, vcode })
         .then((res) => {
             if (!res.ok) {
                 console.error('Error: post login url');
@@ -21,8 +28,8 @@ export function login(fetcher, uid, passwd, vcode) {
         })
         .catch((err) => {
             const msg_type = err instanceof HTTPError
-                ? MSG_TYPE.HTTP_ERROR
-                : MSG_TYPE.UNKNOWN_ERROR;
+                ? MsgType.HTTP_ERROR
+                : MsgType.UNKNOWN_ERROR;
             return { ok: false, msg: decorate_msg(err.message, msg_type) };
         });
 }

@@ -1,12 +1,12 @@
 import { Cookie, CookieJar, wrapFetch } from '@jd1378/another-cookiejar';
 
 export class Fetcher {
-    credentials = 'include';
-    headers = {
+    static headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
     };
+    fetch: ReturnType<typeof wrapFetch>;
 
-    constructor(vcode) {
+    constructor(vcode: string) {
         const cookie = new Cookie({
             name: 'ckAPP_VCODE',
             value: vcode,
@@ -16,20 +16,20 @@ export class Fetcher {
         this.fetch = wrapFetch({ cookieJar: jar });
     }
 
-    get(url, params) {
+    get(url: string, params?: { [key: string]: any }) {
         const full_url = params ? url + '?' + new URLSearchParams(params) : url;
         return this.fetch(full_url, {
             method: 'GET',
-            credentials: this.credentials,
-            headers: this.headers,
+            credentials: 'include',
+            headers: Fetcher.headers,
         });
     }
 
-    post(url, body) {
+    post(url: string, body: { [key: string]: any }) {
         return this.fetch(url, {
             method: 'POST',
-            credentials: this.credentials,
-            headers: this.headers,
+            credentials: 'include',
+            headers: Fetcher.headers,
             body: new URLSearchParams(body), // since our Content-Type is "application/x-www-form-urlencoded"
         });
     }

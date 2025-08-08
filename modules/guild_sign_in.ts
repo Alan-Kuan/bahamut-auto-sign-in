@@ -1,11 +1,12 @@
-import { decorate_msg, MSG_TYPE } from '@/modules/msg_decorator.js';
-import { HTTPError } from '@/modules/error.js';
+import { decorate_msg, MsgType } from '@/msg_decorator.ts';
+import { HTTPError } from '@/error.ts';
+import type { Fetcher } from '@/fetcher.ts';
 
 const guild_url = 'https://api.gamer.com.tw/ajax/common/topBar.php';
 const guild_signin_url = 'https://guild.gamer.com.tw/ajax/guildSign.php';
 
-export function guild_sign_in(fetcher) {
-    return fetcher.get(guild_url, { type: 'forum' })
+export async function guild_sign_in(fetcher: Fetcher): Promise<string> {
+    return await fetcher.get(guild_url, { type: 'forum' })
         .then((res) => {
             if (!res.ok) {
                 console.error('Error: get forum content from top bar');
@@ -29,14 +30,14 @@ export function guild_sign_in(fetcher) {
                     })
                     .then((body) => {
                         const msg_type = body.ok
-                            ? MSG_TYPE.GUILD_SIGNIN_SUCCESS
-                            : MSG_TYPE.GUILD_SIGNING_FAILED;
+                            ? MsgType.GUILD_SIGNIN_SUCCESS
+                            : MsgType.GUILD_SIGNING_FAILED;
                         return decorate_msg(body.msg, msg_type);
                     })
                     .catch((err) => {
                         const msg_type = err instanceof HTTPError
-                            ? MSG_TYPE.HTTP_ERROR
-                            : MSG_TYPE.UNKNOWN_ERROR;
+                            ? MsgType.HTTP_ERROR
+                            : MsgType.UNKNOWN_ERROR;
                         return decorate_msg(err.message, msg_type);
                     });
             });
@@ -47,8 +48,8 @@ export function guild_sign_in(fetcher) {
         })
         .catch((err) => {
             const msg_type = err instanceof HTTPError
-                ? MSG_TYPE.HTTP_ERROR
-                : MSG_TYPE.UNKNOWN_ERROR;
+                ? MsgType.HTTP_ERROR
+                : MsgType.UNKNOWN_ERROR;
             return decorate_msg(err.message, msg_type);
         });
 }

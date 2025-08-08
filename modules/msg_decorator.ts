@@ -1,39 +1,39 @@
-export const MSG_TYPE = Object.freeze({
-    UNKNOWN_ERROR: 0,
-    HTTP_ERROR: 1,
-    SIGNIN_SUCCESS: 2,
-    SIGNIN_FAILED: 3,
-    GUILD_SIGNIN_SUCCESS: 4,
-    GUILD_SIGNING_FAILED: 5,
-    ANI_ANSWER_SUCCESS: 6,
-    ANI_ANSWER_FAILED: 7,
-});
+export const enum MsgType {
+    UNKNOWN_ERROR,
+    HTTP_ERROR,
+    SIGNIN_SUCCESS,
+    SIGNIN_FAILED,
+    GUILD_SIGNIN_SUCCESS,
+    GUILD_SIGNING_FAILED,
+    ANI_ANSWER_SUCCESS,
+    ANI_ANSWER_FAILED,
+};
 
-export function decorate_msg(msg, type) {
+export function decorate_msg(msg: string, type: MsgType): string {
     let icon;
     switch (type) {
-        case MSG_TYPE.UNKNOWN_ERROR:
+        case MsgType.UNKNOWN_ERROR:
             // shrugging
             icon = '\u{1f937}' + random_skin_tone() + random_gender();
             break;
-        case MSG_TYPE.HTTP_ERROR:
+        case MsgType.HTTP_ERROR:
             // frowning
             icon = '\u{1f64d}' + random_skin_tone() + random_gender();
             break;
-        case MSG_TYPE.SIGNIN_SUCCESS:
-        case MSG_TYPE.GUILD_SIGNIN_SUCCESS:
+        case MsgType.SIGNIN_SUCCESS:
+        case MsgType.GUILD_SIGNIN_SUCCESS:
             icon = random_choice(['✌', '🤟', '👍']) + random_skin_tone();
             break;
-        case MSG_TYPE.SIGNIN_FAILED:
-        case MSG_TYPE.GUILD_SIGNING_FAILED:
+        case MsgType.SIGNIN_FAILED:
+        case MsgType.GUILD_SIGNING_FAILED:
             // face palm
             icon = '\u{1f926}' + random_skin_tone() + random_gender();
             break;
-        case MSG_TYPE.ANI_ANSWER_SUCCESS:
+        case MsgType.ANI_ANSWER_SUCCESS:
             // gesture ok
             icon = '\u{1f646}' + random_skin_tone() + random_gender();
             break;
-        case MSG_TYPE.ANI_ANSWER_FAILED:
+        case MsgType.ANI_ANSWER_FAILED:
             // gesture no
             icon = '\u{1f645}' + random_skin_tone() + random_gender();
             break;
@@ -43,14 +43,14 @@ export function decorate_msg(msg, type) {
     return `${icon} ${msg}`;
 }
 
-function random_choice(arr) {
+function random_choice(arr: string[]): string {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
 const ZWJ = '\u{200d}'; // zero-width joiner
 const VS16 = '\u{fe0f}'; // variation selector-16
 
-function random_skin_tone() {
+function random_skin_tone(): string {
     return random_choice([
         '\u{1f3fb}', // light
         '\u{1f3fc}', // medium light
@@ -60,7 +60,7 @@ function random_skin_tone() {
     ]);
 }
 
-function random_gender() {
+function random_gender(): string {
     return ZWJ + random_choice([
         '\u{2642}', // male
         '\u{2640}', // female

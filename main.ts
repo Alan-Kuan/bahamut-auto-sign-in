@@ -1,19 +1,28 @@
 import { load } from '@std/dotenv';
 import { Telegram } from 'telegram';
-import { Fetcher } from '@/modules/fetcher.js';
-import { login } from '@/modules/login.js';
-import { sign_in } from '@/modules/sign_in.js';
-import { guild_sign_in } from '@/modules/guild_sign_in.js';
-// import { ani_answer } from '@/modules/ani_answer.js';
+
+import { Fetcher } from '@/fetcher.ts';
+import { login } from '@/login.ts';
+import { sign_in } from '@/sign_in.ts';
+import { guild_sign_in } from '@/guild_sign_in.ts';
+// import { ani_answer } from '@/ani_answer.ts';
+
+function safeGetEnvVar(name: string): string {
+    const value = Deno.env.get(name);
+    if (value === undefined) {
+        Deno.exit(1);
+    }
+    return value;
+}
 
 // for production: read environment variables
 // for development: read exported variables from .env
 await load({ export: true });
-const UID = Deno.env.get('UID');
-const PASSWD = Deno.env.get('PASSWD');
-const VCODE = Deno.env.get('VCODE');
-const TG_BOT_TOKEN = Deno.env.get('TG_BOT_TOKEN');
-const TG_USER_ID = Deno.env.get('TG_USER_ID');
+const UID = safeGetEnvVar('UID');
+const PASSWD = safeGetEnvVar('PASSWD');
+const VCODE = safeGetEnvVar('VCODE');
+const TG_BOT_TOKEN = safeGetEnvVar('TG_BOT_TOKEN');
+const TG_USER_ID = safeGetEnvVar('TG_USER_ID');
 
 const fetcher = new Fetcher(VCODE);
 const tg_bot = new Telegram(TG_BOT_TOKEN);
