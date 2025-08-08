@@ -1,6 +1,4 @@
-#!/usr/bin/env deno run --import-map import_maps.json
-
-import { Cookie, CookieJar, wrapFetch } from 'another_cookiejar';
+import { Cookie, CookieJar, wrapFetch } from '@jd1378/another-cookiejar';
 
 export class Fetcher {
     credentials = 'include';

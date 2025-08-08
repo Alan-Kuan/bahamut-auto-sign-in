@@ -3,11 +3,16 @@
         "allowJs": true,
         "strict": true
     },
-    "importMap": "import_maps.json",
     "fmt": {
         "options": {
             "singleQuote": true,
             "indentWidth": 4
         }
+    },
+    "imports": {
+        "@std/dotenv": "jsr:@std/dotenv@^0.225.5",
+        "@jd1378/another-cookiejar": "jsr:@jd1378/another-cookiejar@^5.0.7",
+        "telegram": "https://deno.land/x/telegram@v0.1.1/mod.ts",
+        "@/": "./"
     }
 }

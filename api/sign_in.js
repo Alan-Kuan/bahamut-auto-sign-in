@@ -1,6 +1,4 @@
-#!/usr/bin/env deno run --import-map import_maps.json
-
-import { load } from 'dotenv';
+import { load } from '@std/dotenv';
 import { Telegram } from 'telegram';
 import { Fetcher } from '@/modules/fetcher.js';
 import { login } from '@/modules/login.js';
