@@ -10,6 +10,7 @@ import { guild_sign_in } from '@/guild_sign_in.ts';
 function safeGetEnvVar(name: string): string {
     const value = Deno.env.get(name);
     if (value === undefined) {
+        console.error(`The environment variable '${name}' is not set.`);
         Deno.exit(1);
     }
     return value;
