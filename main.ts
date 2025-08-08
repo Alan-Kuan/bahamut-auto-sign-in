@@ -14,23 +14,12 @@ const PASSWD = Deno.env.get('PASSWD');
 const VCODE = Deno.env.get('VCODE');
 const TG_BOT_TOKEN = Deno.env.get('TG_BOT_TOKEN');
 const TG_USER_ID = Deno.env.get('TG_USER_ID');
-const MY_TOKEN = Deno.env.get('MY_TOKEN');
 
 const fetcher = new Fetcher(VCODE);
 const tg_bot = new Telegram(TG_BOT_TOKEN);
 
-Deno.serve(async (req) => {
-    if (!req.headers.has('Authorization')) {
-        console.error('No token was given.');
-        return new Response({ status: 400 });
-    }
-
-    if (req.headers.get('Authorization') !== `Bearer ${MY_TOKEN}`) {
-        console.error('Wrong token was given.');
-        return new Response({ status: 401 });
-    }
-
-    const status = await login(fetcher, UID, PASSWD, VCODE)
+Deno.cron('Scheduled at 00:00 UTC+8 every day', '0 16 * * *', async () => {
+    await login(fetcher, UID, PASSWD, VCODE)
         .then(async (status) => {
             if (!status.ok) {
                 throw new Error(status.msg);
@@ -52,17 +41,11 @@ Deno.serve(async (req) => {
                 `[動畫瘋問答遊戲]\n${ani_answer_msg}\n\n` +
                 `#${today}`;
             await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
-
-            return 200;
         })
         .catch(async (err) => {
             console.error(err);
 
             const msg = `發生錯誤：\n${err.message}`;
             await tg_bot.sendMessage({ chat_id: TG_USER_ID, text: msg });
-
-            return 500;
         });
-
-    return new Response({ status });
 });
