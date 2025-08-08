@@ -19,7 +19,7 @@ const MY_TOKEN = Deno.env.get('MY_TOKEN');
 const fetcher = new Fetcher(VCODE);
 const tg_bot = new Telegram(TG_BOT_TOKEN);
 
-export default async (req) => {
+Deno.serve(async (req) => {
     if (!req.headers.has('Authorization')) {
         console.error('No token was given.');
         return new Response({ status: 400 });
@@ -65,4 +65,4 @@ export default async (req) => {
         });
 
     return new Response({ status });
-};
+});
