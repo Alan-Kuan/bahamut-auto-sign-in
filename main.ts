@@ -27,7 +27,8 @@ const TG_USER_ID = safeGetEnvVar('TG_USER_ID');
 const fetcher = new Fetcher(VCODE);
 const tg_bot = new Telegram(TG_BOT_TOKEN);
 
-Deno.cron('Scheduled at 00:00 UTC+8 every day', '0 16 * * *', async () => {
+// Scheduled at 00:00 UTC+8 every day
+Deno.cron('Automatic Sign-in', '0 16 * * *', async () => {
     await login(fetcher, UID, PASSWD, VCODE)
         .then(async (status) => {
             if (!status.ok) {
