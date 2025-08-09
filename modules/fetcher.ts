@@ -16,6 +16,7 @@ export class Fetcher {
         this.fetch = wrapFetch({ cookieJar: jar });
     }
 
+    // deno-lint-ignore no-explicit-any
     get(url: string, params?: { [key: string]: any }) {
         const full_url = params ? url + '?' + new URLSearchParams(params) : url;
         return this.fetch(full_url, {
@@ -25,6 +26,7 @@ export class Fetcher {
         });
     }
 
+    // deno-lint-ignore no-explicit-any
     post(url: string, body: { [key: string]: any }) {
         return this.fetch(url, {
             method: 'POST',
