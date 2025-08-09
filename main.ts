@@ -40,12 +40,7 @@ Deno.cron('Automatic Sign-in', '0 16 * * *', async () => {
             const guild_signin_msg = await guild_sign_in(fetcher);
             // const ani_answer_msg = await ani_answer(fetcher);
             const ani_answer_msg = '暫時停止執行';
-
-            const today = new Date().toLocaleDateString('zh-TW', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-            }).replaceAll('/', '-');
+            const today = Temporal.Now.zonedDateTimeISO('Asia/Taipei').toPlainDate();
 
             const msg = `[登入簽到]\n${signin_msg}\n\n` +
                 `[公會簽到]\n${guild_signin_msg}\n\n` +
