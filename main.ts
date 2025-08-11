@@ -5,7 +5,7 @@ import { Fetcher } from '@/fetcher.ts';
 import { login } from '@/login.ts';
 import { sign_in } from '@/sign_in.ts';
 import { guild_sign_in } from '@/guild_sign_in.ts';
-import { ani_answer } from '@/ani_answer.ts';
+// import { ani_answer } from '@/ani_answer.ts';
 
 function safeGetEnvVar(name: string): string {
     const value = Deno.env.get(name);
@@ -38,8 +38,8 @@ Deno.cron('Automatic Sign-in', '0 16 * * *', async () => {
 
             const signin_msg = await sign_in(fetcher);
             const guild_signin_msg = await guild_sign_in(fetcher);
-            const ani_answer_msg = await ani_answer(fetcher);
-            // const ani_answer_msg = '暫時停止執行';
+            // const ani_answer_msg = await ani_answer(fetcher);
+            const ani_answer_msg = '暫時停止執行';
             const today = Temporal.Now.zonedDateTimeISO('Asia/Taipei').toPlainDate();
 
             const msg = `[登入簽到]\n${signin_msg}\n\n` +
